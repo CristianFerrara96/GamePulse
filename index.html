@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamePulse - Team Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 GamePulse - Team Tracker</h1>
+        <p>Gestisci il tuo team come una pro, Saretta style™ 💅</p>
+    </div>
+
+    <div class="container">
+        <form id="playerForm">
+            <input type="text" id="name" placeholder="Nome Giocatore" required>
+            <input type="text" id="role" placeholder="Ruolo (es. Attaccante, Supporto)" required>
+            <input type="text" id="rank" placeholder="Rank (es. Champion, Immortal)" required>
+            <textarea id="notes" placeholder="Note o performance recenti..."></textarea>
+            <button type="submit">➕ Aggiungi Giocatore</button>
+        </form>
+
+        <div class="filter">
+            <label for="roleFilter">🎯 Filtra per Ruolo:</label>
+            <select id="roleFilter">
+                <option value="all">Tutti</option>
+            </select>
+        </div>
+
+        <div id="playerList">
+            <!-- Lista dei giocatori verrà popolata qui -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
