@@ -1,39 +1,78 @@
 ﻿<!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GamePulse - Team Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GamePulse - Drag & Drop Edition</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body class="dark">
     <div class="header">
-        <h1>🎮 GamePulse - Team Tracker</h1>
-        <p>Gestisci il tuo team come una pro, Saretta style™ 💅</p>
+        <img src="immagini/Risorsa 3sefw.png" alt="Logo GamePulse" class="logo">
+        <h1> DOMUSTRACKER - Versione PRO</h1>
+        <p><strong>OWNER CARGLASS</strong></p>
+        <p><strong>GTM JOCKEY</strong></p>
+        <button id="themeToggle">🌗 Cambia Tema</button>
     </div>
 
     <div class="container">
         <form id="playerForm">
-            <input type="text" id="name" placeholder="Nome Giocatore" required>
-            <input type="text" id="gioco" placeholder="Nome Gioco" required>
-            <input type="text" id="role" placeholder="Ruolo (es. Attaccante, Supporto)" required>
-            <input type="text" id="rank" placeholder="Rank (es. Champion, Immortal)" required>
-            <textarea id="notes" placeholder="Note o performance recenti..."></textarea>
-            <button type="submit">➕ Aggiungi Giocatore</button>
+            <select id="userType" required>
+                <option value="">👤 Tipo Utente</option>
+                <option value="Player">Player</option>
+                <option value="Coach">Coach</option>
+            </select>
+
+            <select id="game" required>
+                <option value="">🎮 Seleziona Gioco</option>
+                <option value="COD">Call of Duty</option>
+                <option value="Valorant">Valorant</option>
+                <option value="RL">Rocket League</option>
+            </select>
+
+            <input type="text" id="name" placeholder="Nome" required>
+            <input type="text" id="team" placeholder="Team (es. Academy)" required>
+            <input type="text" id="idGame" placeholder="ID Gioco" required>
+            <input type="url" id="tracker" placeholder="Link Tracker" required>
+            <input type="text" id="discord" placeholder="Discord Username">
+            <input type="text" id="availability" placeholder="Disponibilità (Full-time, Sub)">
+
+            <select id="role" required>
+                <option value="">🎯 Ruolo</option>
+            </select>
+
+            <input type="text" id="rank" placeholder="Rank">
+            <input type="text" id="stat" placeholder="Statistiche (es. KD, MMR)">
+
+            <label for="photo">📷 Carica Foto</label>
+            <input type="file" id="photo" accept="image/*">
+
+            <textarea id="notes" placeholder="Note o performance..."></textarea>
+
+            <button type="submit">➕ Aggiungi Utente</button>
         </form>
 
         <div class="filter">
-            <label for="roleFilter">🎯 Filtra per Ruolo:</label>
+            <label for="roleFilter">🎮 Filtra per Gioco:</label>
             <select id="roleFilter">
                 <option value="all">Tutti</option>
             </select>
         </div>
 
-        <div id="playerList">
-            <!-- Lista dei giocatori verrà popolata qui -->
+        <div class="search">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca per Team, Coach o Giocatore...">
         </div>
+
+        <div id="playerList"></div>
     </div>
 
     <script src="script.js"></script>
+    <script>
+        const toggleBtn = document.getElementById("themeToggle");
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            document.body.classList.toggle("light");
+        });
+    </script>
 </body>
 </html>

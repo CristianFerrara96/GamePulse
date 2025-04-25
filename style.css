@@ -1,43 +1,63 @@
-﻿/* style.css */
-
-body {
+﻿body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #0f0f1b;
-    color: #e0e0f0;
     transition: background-color 0.5s, color 0.5s;
+    background: linear-gradient(-45deg, #0f0f1b, #191933, #0f0f1b, #1a1a2e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    color: #e0e0f0;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+body.light {
+    background: #f1f1f1;
+    color: #1c1c2e;
 }
 
 .header {
-    background: linear-gradient(to right, #6a00f4, #8e2de2);
-    padding: 2rem;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(to right, #8e2de2, #6a00f4);
     color: white;
 }
 
-    .header h1 {
-        margin: 0;
-        font-size: 2.5rem;
-    }
-
-    .header p {
-        font-style: italic;
-        opacity: 0.9;
-    }
+#themeToggle {
+    background: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
 .container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 2rem auto;
     padding: 2rem;
-    background-color: #1c1c2e;
     border-radius: 15px;
-    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+    backdrop-filter: blur(10px);
+    background: rgba(44, 44, 78, 0.6);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+    display: grid;
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -47,7 +67,6 @@ input, textarea, select {
     border: none;
     background-color: #2a2a40;
     color: #fff;
-    font-size: 1rem;
 }
 
 button {
@@ -55,15 +74,20 @@ button {
     background-color: #6a00f4;
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: box-shadow 0.3s ease;
 }
 
     button:hover {
-        background-color: #5200c9;
+        box-shadow: 0 0 10px #b58fff, 0 0 20px #8e2de2;
     }
+
+.filter, .search {
+    margin: 1rem 0;
+    text-align: center;
+}
 
 #playerList {
     display: grid;
@@ -73,39 +97,81 @@ button {
 .player-card {
     background-color: #292947;
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 10px;
     box-shadow: 0 0 8px rgba(138, 43, 226, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
 }
 
-    .player-card h3 {
-        margin: 0 0 0.5rem;
-        color: #ffffff;
+    .player-card img {
+        max-width: 100px;
+        border-radius: 8px;
     }
 
-    .player-card p {
-        margin: 0.2rem 0;
-        font-size: 0.95rem;
-        color: #bdbde0;
-    }
-
-.filter {
+.team-block {
     margin-bottom: 2rem;
-    text-align: center;
 }
 
-    .filter label {
-        margin-right: 0.5rem;
-        font-weight: bold;
-        font-size: 1rem;
-        color: #ffffff;
-    }
+h2 {
+    color: #b58fff;
+}
+/* stesso contenuto già inviato + aggiunta animazione drag */
 
-@media (max-width: 600px) {
-    .container {
-        padding: 1rem;
-    }
+.drag-over {
+    outline: 2px dashed #b58fff;
+    background-color: rgba(138, 43, 226, 0.1);
+}
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    color: white;
+}
 
-    .header h1 {
-        font-size: 2rem;
-    }
+.badge-igl {
+    background-color: #8a2be2; /* viola */
+}
+
+.badge-sentinell {
+    background-color: #00bfff; /* azzurro */
+}
+
+.badge-control {
+    background-color: #1e3a8a; /* blu navy */
+}
+
+.badge-dualist {
+    background-color: #ff4d4d; /* rosso */
+}
+
+.badge-initiator {
+    background-color: #ffd700; /* giallo */
+}
+
+.badge-flex {
+    background-color: #ff8c00; /* arancione */
+}
+
+.badge-healer {
+    background-color: #32cd32; /* verde chiaro */
+}
+
+.badge-support {
+    background-color: #00c853; /* verde */
+}
+
+.badge-fragger {
+    background-color: #d50000; /* rosso intenso */
+}
+
+.badge-sub, .badge-main {
+    background-color: #b0bec5; /* grigio ghiaccio */
+}
+.logo {
+    width: 50px;
+    height: 150px;
 }
