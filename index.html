@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GamePulse - Drag & Drop Edition</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
 </head>
 <body class="dark">
     <div class="header">
         <img src="immagini/Risorsa 3sefw.png" alt="Logo GamePulse" class="logo">
-        <h1> DOMUSTRACKER - Versione PRO</h1>
+        <h1>DOMUSTRACKER - Versione PRO</h1>
         <p><strong>OWNER CARGLASS</strong></p>
         <p><strong>GTM JOCKEY</strong></p>
         <button id="themeToggle">🌗 Cambia Tema</button>
@@ -37,7 +39,7 @@
             <input type="text" id="discord" placeholder="Discord Username">
             <input type="text" id="availability" placeholder="Disponibilità (Full-time, Sub)">
 
-            <select id="role" required>
+            <select id="role">
                 <option value="">🎯 Ruolo</option>
             </select>
 
@@ -52,27 +54,53 @@
             <button type="submit">➕ Aggiungi Utente</button>
         </form>
 
-        <div class="filter">
-            <label for="roleFilter">🎮 Filtra per Gioco:</label>
-            <select id="roleFilter">
-                <option value="all">Tutti</option>
-            </select>
-        </div>
+        <div class="glow-panel">
+            <div class="dashboard">
+                <h2>📊 Dashboard</h2>
+                <div class="dashboard-stats">
+                    <p><strong>Totale:</strong> <span id="totalUsers">0</span></p>
+                    <p><strong>Players:</strong> <span id="totalPlayers">0</span> • <strong>Coach:</strong> <span id="totalCoaches">0</span></p>
+                    <p><strong>COD:</strong> <span id="codPlayers">0</span> • <strong>Valorant:</strong> <span id="valorantPlayers">0</span> • <strong>RL:</strong> <span id="rlPlayers">0</span></p>
+                    <p><strong>Team Totali:</strong> <span id="totalTeams">0</span></p>
+                </div>
+            </div>
 
-        <div class="search">
-            <input type="text" id="searchInput" placeholder="🔍 Cerca per Team, Coach o Giocatore...">
+            <!-- Modale Modifica Player/Coach -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeModal" class="close">&times;</span>
+                    <h2>✏️ Modifica Utente</h2>
+                    <form id="editForm">
+                        <input type="text" id="editName" placeholder="Nome" required>
+                        <input type="text" id="editTeam" placeholder="Team" required>
+                        <input type="text" id="editDiscord" placeholder="Discord">
+                        <input type="text" id="editAvailability" placeholder="Disponibilità">
+                        <button type="submit">💾 Salva Modifiche</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glow-controls">
+                <div class="filter">
+                    <label for="roleFilter">🎮 Filtro Gioco:</label>
+                    <select id="roleFilter">
+                        <option value="all">Tutti</option>
+                    </select>
+                </div>
+
+                <div class="search">
+                    <input type="text" id="searchInput" placeholder="🔍 Cerca Team o Player...">
+                </div>
+
+                <div class="export">
+                    <button id="exportCSV">📥 Esporta CSV</button>
+                </div>
+            </div>
         </div>
 
         <div id="playerList"></div>
     </div>
 
     <script src="script.js"></script>
-    <script>
-        const toggleBtn = document.getElementById("themeToggle");
-        toggleBtn.addEventListener("click", () => {
-            document.body.classList.toggle("dark");
-            document.body.classList.toggle("light");
-        });
-    </script>
 </body>
 </html>
