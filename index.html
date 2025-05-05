@@ -10,11 +10,63 @@
 </head>
 <body class="dark">
     <div class="header">
-        <img src="immagini/Risorsa 3sefw.png" alt="Logo GamePulse" class="logo">
-        <h1>DOMUSTRACKER - Versione PRO</h1>
-        <p><strong>OWNER CARGLASS</strong></p>
-        <p><strong>GTM JOCKEY</strong></p>
-        <button id="themeToggle">🌗 Cambia Tema</button>
+        <nav class="glow-navbar">
+            <div class="nav-container">
+                <img src="immagini/Risorsa 3sefw.png" alt="Logo" class="logo">
+                <ul class="nav-links">
+                    <li><a href="index.html">🏡 Home</a></li>
+                    <li><a href="teams.html">📋 Teams</a></li>
+                    <li><a href="players.html">🎮 Players</a></li>
+                    <li><a href="coaches.html">🧑‍🏫 Coaches</a></li>
+                </ul>
+            </div>
+        </nav>
+        <style>
+            .glow-navbar {
+                background: var(--panel-bg);
+                border-bottom: 2px solid var(--border-color);
+                box-shadow: 0 0 15px rgba(180, 130, 255, 0.2);
+                display: flex;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 1200px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                list-style: none;
+                display: flex;
+                gap: 1.5rem;
+                padding: 0;
+                margin: 0;
+            }
+
+                .nav-links li a {
+                    color: var(--text-color);
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: color 0.3s;
+                }
+
+                    .nav-links li a:hover {
+                        color: var(--accent);
+                    }
+
+            @media (max-width: 768px) {
+                .nav-links {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+                }
+            }
+        </style>
+        <h1>DOMUS DATABASE</h1>
     </div>
 
     <div class="container">
@@ -34,8 +86,11 @@
 
             <input type="text" id="name" placeholder="Nome" required>
             <input type="text" id="team" placeholder="Team (es. Academy)" required>
-            <input type="text" id="idGame" placeholder="ID Gioco" required>
-            <input type="url" id="tracker" placeholder="Link Tracker" required>
+            <input type="text" id="idGame" placeholder="ID Gioco">
+            <div id="trackerWrapper">
+                <input type="url" id="tracker" placeholder="Link Tracker">
+            </div>
+
             <input type="text" id="discord" placeholder="Discord Username">
             <input type="text" id="availability" placeholder="Disponibilità (Full-time, Sub)">
 

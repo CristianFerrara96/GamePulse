@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomusTracker - Teams</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+    <style>
+        .glow-navbar {
+            background: var(--panel-bg);
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(180, 130, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            padding: 0;
+            margin: 0;
+        }
+
+            .nav-links li a {
+                color: var(--text-color);
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s;
+            }
+
+                .nav-links li a:hover {
+                    color: var(--accent);
+                }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+
+        .team-block {
+            margin-bottom: 3rem;
+            padding: 1rem;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            background-color: var(--panel-bg);
+            box-shadow: 0 0 10px rgba(180, 130, 255, 0.2);
+        }
+
+            .team-block h2 {
+                margin-top: 0;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 0.5rem;
+            }
+
+        .search-box {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+            .search-box input {
+                padding: 0.7rem;
+                width: 100%;
+                max-width: 400px;
+                border-radius: 10px;
+                border: none;
+                background-color: var(--card-bg);
+                color: var(--text-color);
+            }
+    </style>
+</head>
+<body class="dark">
+    <div class="header">
+        <nav class="glow-navbar">
+            <div class="nav-container">
+                <img src="immagini/Risorsa 3sefw.png" alt="Logo" class="logo">
+                <ul class="nav-links">
+                    <li><a href="index.html">🏡 Home</a></li>
+                    <li><a href="teams.html">📋 Teams</a></li>
+                    <li><a href="players.html">🎮 Players</a></li>
+                    <li><a href="coaches.html">🧑‍🏫 Coaches</a></li>
+                </ul>
+            </div>
+        </nav>
+        <h1>📋 Elenco Team - DomusTracker</h1>
+        <a href="index.html" class="team-btn">🏠 Torna alla Home</a>
+    </div>
+
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca player o team...">
+
+        </div>
+        <div id="teamsList" class="glow-panel"></div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaix6Ctj4JojoXL3YtctauX7ZPnYQERCo",
+            authDomain: "domustrackerdb.firebaseapp.com",
+            projectId: "domustrackerdb",
+            storageBucket: "domustrackerdb.appspot.com",
+            messagingSenderId: "860989800221",
+            appId: "1:860989800221:web:9d9b813a4103a6ebfe6bf4"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const teamsList = document.getElementById("teamsList");
+        const searchInput = document.getElementById("searchInput");
+        let allTeamsData = {};
+
+        async function loadTeams() {
+            const snapshot = await db.collection('players').get();
+            const players = [];
+            snapshot.forEach(doc => players.push(doc.data()));
+
+            const teams = {};
+            players.forEach(player => {
+                const teamName = player.team || "Sconosciuto";
+                if (!teams[teamName]) {
+                    teams[teamName] = [];
+                }
+                teams[teamName].push(player);
+            });
+
+            allTeamsData = teams;
+            renderTeams("");
+        }
+
+        function renderTeams(filter) {
+            teamsList.innerHTML = "";
+            const filterText = filter.toLowerCase();
+
+            for (const [teamName, members] of Object.entries(allTeamsData)) {
+                const teamMatch = teamName.toLowerCase().includes(filterText);
+                const memberMatch = members.some(m => m.name.toLowerCase().includes(filterText));
+
+                if (filterText && !teamMatch && !memberMatch) continue;
+
+                const teamBlock = document.createElement("div");
+                teamBlock.className = "team-block";
+                teamBlock.innerHTML = `<h2>🏷️ ${teamName} (${members.length})</h2>`;
+
+                const coachGroup = document.createElement("div");
+                const playerGroup = document.createElement("div");
+                coachGroup.innerHTML = `<h3>🧑‍🏫 Coaches</h3>`;
+                playerGroup.innerHTML = `<h3>🎮 Players</h3>`;
+
+                members.forEach(member => {
+                    if (!member.name.toLowerCase().includes(filterText) && !teamName.toLowerCase().includes(filterText) && filterText) return;
+
+                    const card = document.createElement("div");
+                    card.className = "player-card";
+                    const icon = member.userType === "Coach" ? "🧑‍🏫" : "🎮";
+                    card.innerHTML = `
+                            ${member.photo ? `<img src="${member.photo}" alt="Foto">` : ""}
+                            <h3>${icon} ${member.name}</h3>
+                            <p><strong>Gioco:</strong> ${member.game}</p>
+                            ${member.role ? `<p><strong>Ruolo:</strong> ${member.role}</p>` : ""}
+                        `;
+                    if (member.userType === "Coach") {
+                        coachGroup.appendChild(card);
+                    } else {
+                        playerGroup.appendChild(card);
+                    }
+                });
+
+                teamBlock.appendChild(coachGroup);
+                teamBlock.appendChild(playerGroup);
+                teamsList.appendChild(teamBlock);
+            }
+        }
+
+        searchInput.addEventListener("input", (e) => {
+            renderTeams(e.target.value);
+        });
+
+        loadTeams();
+    </script>
+</body>
+</html>

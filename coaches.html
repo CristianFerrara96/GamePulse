@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DomusTracker - Coaches</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="dark">
+    <div class="header">
+        <nav class="glow-navbar">
+            <div class="nav-container">
+                <img src="immagini/Risorsa 3sefw.png" alt="Logo" class="logo">
+                <ul class="nav-links">
+                    <li><a href="index.html">🏡 Home</a></li>
+                    <li><a href="teams.html">📋 Teams</a></li>
+                    <li><a href="players.html">🎮 Players</a></li>
+                    <li><a href="coaches.html">🧑‍🏫 Coaches</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <style>
+            .glow-navbar {
+                background: var(--panel-bg);
+                border-bottom: 2px solid var(--border-color);
+                box-shadow: 0 0 15px rgba(180, 130, 255, 0.2);
+                display: flex;
+                justify-content: center;
+                padding: 1rem;
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 1200px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                list-style: none;
+                display: flex;
+                gap: 1.5rem;
+                padding: 0;
+                margin: 0;
+            }
+
+                .nav-links li a {
+                    color: var(--text-color);
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: color 0.3s;
+                }
+
+                    .nav-links li a:hover {
+                        color: var(--accent);
+                    }
+
+            @media (max-width: 768px) {
+                .nav-links {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+                }
+            }
+        </style>
+
+        <h1>🧑‍🏫 Elenco Coaches - DomusTracker</h1>
+        <a href="index.html" class="team-btn">🏠 Torna alla Home</a>
+    </div>
+
+    <div class="container">
+        <div id="coachesList" class="glow-panel"></div>
+    </div>
+
+    <script>
+        // Inizializza Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaix6Ctj4JojoXL3YtctauX7ZPnYQERCo",
+            authDomain: "domustrackerdb.firebaseapp.com",
+            projectId: "domustrackerdb",
+            storageBucket: "domustrackerdb.appspot.com",
+            messagingSenderId: "860989800221",
+            appId: "1:860989800221:web:9d9b813a4103a6ebfe6bf4"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const coachesList = document.getElementById("coachesList");
+
+        async function loadCoaches() {
+            const snapshot = await db.collection('players').where("userType", "==", "Coach").get();
+            const coaches = [];
+            snapshot.forEach(doc => coaches.push(doc.data()));
+
+            coaches.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+            coaches.forEach(coach => {
+                const coachCard = document.createElement("div");
+                coachCard.className = "player-card";
+
+                coachCard.innerHTML = `
+                    ${coach.photo ? `<img src="${coach.photo}" alt="Foto">` : ""}
+                    <h3>🧑‍🏫 ${coach.name}</h3>
+                    <p><strong>Gioco:</strong> ${coach.game}</p>
+                    <p><strong>Team:</strong> ${coach.team}</p>
+                `;
+                coachesList.appendChild(coachCard);
+            });
+        }
+
+        loadCoaches();
+    </script>
+</body>
+</html>

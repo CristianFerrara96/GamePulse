@@ -11,20 +11,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Tema chiaro/scuro
-const themeBtn = document.getElementById("themeToggle");
-function applyTheme(theme) {
-    document.body.classList.toggle("light", theme === "light");
-    document.body.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
-    themeBtn.textContent = theme === "light" ? "🌙 Tema Scuro" : "🌞 Tema Chiaro";
-}
-themeBtn.addEventListener("click", () => {
-    const current = document.body.classList.contains("light") ? "light" : "dark";
-    applyTheme(current === "light" ? "dark" : "light");
-});
-applyTheme(localStorage.getItem("theme") || "dark");
-
 // Variabili principali
 const form = document.getElementById("playerForm");
 const playerList = document.getElementById("playerList");
@@ -38,7 +24,7 @@ const searchInput = document.getElementById("searchInput");
 
 // Ruoli per gioco
 const rolesPerGame = {
-    COD: ["Main AR", "Flex", "SMG Slayer", "Entry/Support Sub"],
+    COD: ["IGL", "Fragger", "Support"],
     Valorant: ["Duelist", "Initiator", "Controller", "Sentinel"],
     RL: ["Disruptor", "Playmaker", "Defender"]
 };
@@ -48,6 +34,7 @@ function updateFormFields() {
     const userType = userTypeSelect.value;
     const game = gameSelect.value;
 
+    // Gestione ruolo, rank e stat per Coach vs Player
     if (userType === "Coach") {
         roleSelect.innerHTML = '<option value="">🎯 Ruolo</option>';
         roleSelect.disabled = true;
@@ -73,6 +60,16 @@ function updateFormFields() {
                 roleSelect.appendChild(option);
             });
         }
+    }
+
+    // Nasconde tracker se gioco è COD
+    const trackerInput = document.getElementById("tracker");
+    if (game === "COD") {
+        trackerInput.style.display = "none";
+        trackerInput.disabled = true;
+    } else {
+        trackerInput.style.display = "block";
+        trackerInput.disabled = false;
     }
 }
 userTypeSelect.addEventListener("change", updateFormFields);
